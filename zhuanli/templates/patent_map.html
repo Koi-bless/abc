@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.net/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
+    <script src="{{ url_for('static', filename='js/echarts.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery-3.1.1.min.js') }}"></script>
+    <script type="text/javascript" src="https://assets.pyecharts.org/assets/v5/maps/china.js"></script>
+</head>
+<body>
+<div class="main">
+    <header>全国专利分布</header>
+    <section>
+        <table class="table table-striped">
+            <caption><span class="glyphicon glyphicon-globe"></span>全国专利分布-热点图</caption>
+        </table>
+        <div id="chart",style="width:100%;height:600px;"></div>
+    </section>
+    <script>
+        $(function () {
+            $.ajax({
+                url: '/patent_map_chart',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    let chart = echarts.init(document.getElementById('chart'));
+                    chart.setOption(data);
+                }
+            });
+        });
+    </script>
+</div>
+
+</body>
+</html>

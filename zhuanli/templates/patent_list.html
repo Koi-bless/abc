@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.net/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+    <style>
+        status-pending {
+            background-color: #FFF3E0;
+            color: #FF7D00;
+        }
+
+        .status-approved {
+            background-color: #E8F5E9;
+            color: #00B42A;
+        }
+
+        .status-rejected {
+            background-color: #FFE0E0;
+            color: #F53F3F;
+        }
+
+        .status-processing {
+            background-color: #E8F3FF;
+            color: #165DFF;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+<div class="main">
+    <header>专利列表</header>
+    <<div class="stats-container">
+        <div class="stat-card">
+            <p>{{ data.patent_sum }}项</p>
+            <p>专利总数</p>
+        </div>
+    </div>
+
+    <div class="search-section">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="输入关键词搜索专利名称、申请人或发明人...">
+            <button id="searchBtn"><i class="fas fa-search"></i> 搜索专利</button>
+        </div>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label>申请日期范围</label>
+                <input type="date" id="applyDateFrom">
+            </div>
+            <div class="filter-group">
+                <label>至</label>
+                <input type="date" id="applyDateTo">
+            </div>
+            <div class="filter-group">
+                <label>专利类型</label>
+                <select id="patentType">
+                    <option value="">全部类型</option>
+                    <option value="发明专利">发明专利</option>
+                    <option value="实用新型">实用新型</option>
+                    <option value="外观设计">外观设计</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>排序方式</label>
+                <select id="sortBy">
+                    <option value="applyDate">申请日期（最新）</option>
+                    <option value="applyDateOld">申请日期（最早）</option>
+                    <option value="publicDate">公开日期（最新）</option>
+                    <option value="name">专利名称</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-section">
+        <table class="table table-striped">
+            <caption><span class="glyphicon glyphicon-th-list"></span>专利数据详情表</caption>
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>专利名称</th>
+                <th>申请人</th>
+                <th>发明人</th>
+                <th>申请日期</th>
+                <th>公开日期</th>
+                <th>专利类型</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for patent in data.patent %}
+            <tr>
+                <td>{{ patent[0]}}</td>
+                <td>{{ patent[1]}}</td>
+                <td>{{ patent[2] }}</td>
+                <td>{{ patent[3] }}</td>
+                <td>{{ patent[4] }}</td>
+                <td>{{ patent[5] }}</td>
+                <td>{{ patent[6] }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</div>
+</body>
+</html>
