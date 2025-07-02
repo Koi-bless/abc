@@ -37,8 +37,8 @@ def patent_by_province():
 def patent_by_province_chart():
     data = utils.get_count_by_province()
     # 修改为使用整数索引
-    provinces = [item['province'] for item in data]
-    counts = [item['nums'] for item in data]
+    provinces = [item[0] for item in data]
+    counts = [item[1] for item in data]
     if not data:
         return "无法获取专利数据，请检查数据库连接", 500
     chart = charts.patent_province_chart((provinces, counts))
@@ -55,7 +55,7 @@ def province_percent_chart():
     args = []
     items = utils.get_count_by_province()
     for item in items:
-        args.append((item['province'], item['nums']))
+        args.append((item[0], item[1]))
     return charts.province_percent_chart(args)
 
 
@@ -69,7 +69,7 @@ def patent_map_chart():
     args = []
     items = utils.get_count_by_province()
     for item in items:
-        args.append((item['province'],item['nums']))
+        args.append((item[0],item[1]))
     return charts.patent_map_chart(args)
 
 if __name__ == '__main__':

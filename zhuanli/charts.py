@@ -5,6 +5,7 @@ from pyecharts import options as opts
 def patent_province_chart(args):
     chart = Bar()
     chart.add_xaxis(args[0])
+    print(args[0])
     chart.add_yaxis('专利数量', args[1],bar_width=15)
     chart.set_global_opts(
         xaxis_opts=opts.AxisOpts(
@@ -68,5 +69,4 @@ def patent_map_chart(args):
             is_show=False
         )
     )
-    print(1)
     return chart.dump_options_with_quotes()

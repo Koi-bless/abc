@@ -1,106 +1,129 @@
-/* 内容页面通用样式 */
-.content-page {
-    padding: 30px;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-    margin-bottom: 30px;
-}
-
-.page-header {
-    padding: 20px 0;
-    border-bottom: 1px solid #eaeff5;
-    margin-bottom: 25px;
-    display: flex;
-    align-items: center;
-}
-
-.page-title {
-    font-size: 1.8rem;
-    color: #2c3e50;
-    font-weight: 600;
+*{
     margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
-.page-icon {
-    font-size: 1.8rem;
-    margin-right: 15px;
-    color: #4a6491;
+.main{
+    padding: 15px;
 }
 
-/* 卡片样式 */
-.card-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
-    margin-bottom: 30px;
+.main>header{
+    height: 40px;
+    background-color: #eee;
+    font-size: 1.1em;
+    line-height: 40px;
+    text-indent: 2em;
+    color: #666;
 }
 
-.card {
-    background: #fff;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
-    position: relative;
-    height: 180px;
-    display: flex;
-    flex-direction: column;
+nav>ul{
+    margin-top: 20px;
+    display: flex; /* 使用flex布局 */
+    justify-content: space-between; /* 横向分散对齐 */
 }
 
-.card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
-}
-
-.card-header {
-    height: 50px;
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-    background: linear-gradient(90deg, #4a6491 0%, #5b7bb4 100%);
-    color: white;
-    font-weight: 600;
-    font-size: 1.1rem;
-}
-
-.card-body {
-    flex: 1;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+nav>ul>li{
+    height: 100px;
+    width: 15%;
+    border-radius: 5px;
     background-size: cover;
+    background-repeat: no-repeat;
     position: relative;
 }
 
-.card-body::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
+nav>ul>li:after {
+    content: ''; /* 必须有内容，即使是空字符串 */
+    position: absolute; /* 绝对定位 */
+    top: 0; /* 定位到顶部 */
+    left: 0; /* 定位到左侧 */
+    width: 100%; /* 宽度占满整个li */
+    height: 100%; /* 高度占满整个li */
+    background-color: rgba(0, 0, 0, 0.3); /* 设置半透明黑色蒙版 */
     z-index: 1;
 }
 
-.card-title {
-    color: white;
-    font-size: 1.3rem;
-    z-index: 2;
+nav>ul>li>p{
+    color: #fff;
+    height: 44px;
+    line-height: 44px;
     text-align: center;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 2;
 }
 
-/* 图表容器 */
-.chart-container {
+nav>ul>li:nth-child(1){
+    background-image: url("../images/1.jpg");
+}
+
+nav>ul>li:nth-child(2){
+    background-image: url("../images/2.jpg");
+}
+
+nav>ul>li:nth-child(3){
+    background-image: url("../images/3.jpg");
+}
+
+nav>ul>li:nth-child(4){
+    background-image: url("../images/4.jpg");
+}
+
+nav>ul>li:nth-child(5){
+    background-image: url("../images/5.jpg");
+}
+
+nav>ul>li:nth-child(6){
+    background-image: url("../images/6.jpg");
+}
+
+caption{
+    margin-top: 10px;
+    color: #333;
+}
+
+caption>span{
+    padding-right: 10px;
+}
+
+#chart{
     width: 100%;
-    height: 600px;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-    padding: 25px;
-    margin-bottom: 30px;
+    height: 83vh;
 }
 
+.content{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.content>li{
+    width: calc(50% - 15px); /* 两个格子占一行，减去间隔 */
+    margin-bottom: 30px; /* 格子底部间隔 */
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+
+.content>li>p{
+    height: 40px;
+    width: 100%;
+    text-align: center;
+    font-size: 1em;
+    margin-left: 5px;
+    line-height: 40px;
+    font-weight: bold;
+    color: #666;
+    border-bottom: 1px solid #ddd;
+}
+
+.cloud{
+    padding: 10px;
+    width: 96%;
+    margin-left: 2%;
+}
+
+.cloud>img{
+    width: 100%;
+
+}
