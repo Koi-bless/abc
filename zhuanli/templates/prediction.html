@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <title>专利申请预测分析</title>
     <!-- 引入 Bootstrap 样式 -->
     <link rel="stylesheet" href="https://cdn.staticfile.net/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- 引入 Font Awesome 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <!-- 引入自定义样式 -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
     <!-- 引入 ECharts 库 -->
@@ -14,38 +17,57 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8fafc;
+            background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
             color: #334155;
             margin: 0;
             padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
        .main {
             max-width: 1200px;
+            width: 90%;
             margin: 30px auto;
-            padding: 30px;
-            background-color: #fff;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         header {
-            background-color: #1e40af;
+            background: linear-gradient(90deg, #1e40af, #2563eb);
             color: white;
-            padding: 20px;
+            padding: 25px;
             text-align: center;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            font-size: 24px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            font-size: 28px;
             font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         table {
             background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            margin-bottom: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+            overflow: hidden;
         }
 
         table caption {
@@ -53,35 +75,53 @@
             text-align: center;
             font-weight: bold;
             color: #1e40af;
-            margin-bottom: 15px;
-            font-size: 18px;
+            margin-bottom: 20px;
+            font-size: 20px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         #chart {
             width: 100%;
-            height: 500px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            height: 550px;
+            border-radius: 15px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.8);
         }
 
         #chart:hover {
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
         }
 
        .glyphicon {
-            margin-right: 8px;
+            margin-right: 10px;
+        }
+
+       .loading {
+            text-align: center;
+            padding: 80px 0;
+            color: #1e40af;
+            font-size: 18px;
+        }
+
+       .error {
+            text-align: center;
+            padding: 80px 0;
+            color: #e74c3c;
+            font-size: 18px;
         }
     </style>
 </head>
+
 <body>
     <div class="main">
         <!-- 页面头部 -->
-        <header>专利预测</header>
+        <header>专利申请数量预测</header>
         <!-- 表格和图表区域 -->
         <section>
             <table class="table table-striped">
-                <caption><span class="glyphicon glyphicon-globe"></span>专利预测-折线图</caption>
+                <caption><i class="fa-solid fa-chart-line"></i> 专利申请数量预测-折线图</caption>
             </table>
             <div id="chart"></div>
         </section>
@@ -93,19 +133,20 @@
                 url: '/prediction_chart',
                 type: 'GET',
                 dataType: 'json',
-                beforeSend: function() {
+                beforeSend: function () {
                     // 加载动画效果
-                    $("#chart").html('<div style="text-align:center;padding:50px 0;"><i class="fa fa-spinner fa-spin" style="font-size:24px;"></i> 加载数据中...</div>');
+                    $("#chart").html('<div class="loading"><i class="fa-solid fa-spinner fa-spin fa-2x"></i> 加载数据中...</div>');
                 },
                 success: function (data) {
                     let chart = echarts.init(document.getElementById('chart'));
                     chart.setOption(data);
                 },
-                error: function() {
-                    $("#chart").html('<div style="text-align:center;padding:50px 0;color:#e74c3c;"><i class="fa fa-exclamation-circle" style="font-size:24px;margin-right:10px;"></i> 数据加载失败，请重试</div>');
+                error: function () {
+                    $("#chart").html('<div class="error"><i class="fa-solid fa-exclamation-circle fa-2x"></i> 数据加载失败，请重试</div>');
                 }
             });
         });
     </script>
 </body>
+
 </html>
