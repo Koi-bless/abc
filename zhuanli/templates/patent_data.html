@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>专利数据分析中心</title>
+    <!-- 引入 Bootstrap 样式 -->
+    <link rel="stylesheet" href="https://cdn.staticfile.net/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- 引入自定义样式 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css')  }}"/>
+    <!-- 引入 jQuery 库 -->
+    <script src="{{ url_for('static', filename='js/jquery-3.1.1.min.js') }}"></script>
+    <!-- 引入自定义脚本 -->
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+    <!-- 引入 Chart.js 库 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- 引入 Font Awesome 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        /* 全局样式 */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e8f4ff 0%, #d6e6f5 100%);
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+       .wrapper {
+            max-width: 1300px;
+            margin: 30px auto;
+            padding: 40px;
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+       .content main {
+            padding: 25px;
+        }
+
+        /* 欢迎信息样式 */
+       .welcome-info {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+       .welcome-info h1 {
+            color: #1a2a3a;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.15);
+            letter-spacing: 1px;
+        }
+
+       .welcome-info p {
+            color: #6c757d;
+            font-size: 1.4rem;
+            max-width: 900px;
+            margin: 0 auto;
+            opacity: 0.8;
+        }
+
+        /* 数据概览卡片样式 */
+       .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+       .card-hover {
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+       .card-hover:hover {
+            transform: translateY(-20px);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.2);
+        }
+
+       .card-hover h3 {
+            color: #6c757d;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+       .icon-container {
+            width: 70px;
+            height: 70px;
+            background-color: rgba(0, 123, 255, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            transition: background-color 0.3s ease;
+        }
+
+       .card-hover:hover .icon-container {
+            background-color: rgba(0, 123, 255, 0.25);
+        }
+
+       .icon-container i {
+            color: #007bff;
+            font-size: 2.2rem;
+        }
+
+       .card-hover p.text-3xl {
+            color: #1a2a3a;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+       .card-hover p.text-sm {
+            color: #28a745;
+            font-size: 1.2rem;
+        }
+
+        /* 图表容器样式 */
+       .chart-container {
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            margin-bottom: 50px;
+            transition: all 0.3s ease;
+            /* 新增样式：限制图表容器最大宽度 */
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+       .chart-container:hover {
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+       .chart-container h2 {
+            color: #1a2a3a;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        /* 新增样式：图表画布容器 */
+       .chart-wrapper {
+            position: relative;
+            height: 300px; /* 固定高度 */
+            width: 100%;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <section>
+            <div class="content">
+                <main class="flex-1 ml-16 md:ml-64 p-6 transition-all duration-300">
+                    <div class="container mx-auto">
+                        <!-- 欢迎信息 -->
+                        <div class="welcome-info mb-8">
+                            <h1 class="font-bold mb-2">专利数据分析中心</h1>
+                            <p class="text-muted">欢迎使用专利可视化平台，这里提供全面的专利数据统计与分析</p>
+                        </div>
+
+                        <!-- 数据概览卡片 -->
+                        <div class="card-container">
+                            <div class="card-hover">
+                                <div class="icon-container">
+                                    <i class="fa fa-file-text-o"></i>
+                                </div>
+                                <h3 class="text-muted font-medium">专利总量</h3>
+                                <p class="text-3xl font-bold mb-1">1,258,347</p>
+                                <p class="text-sm text-green-500"><i class="fa fa-arrow-up"></i> 同比增长 12.5%</p>
+                            </div>
+
+                            <div class="card-hover">
+                                <div class="icon-container">
+                                    <i class="fa fa-lightbulb-o"></i>
+                                </div>
+                                <h3 class="text-muted font-medium">发明专利</h3>
+                                <p class="text-3xl font-bold mb-1">523,689</p>
+                                <p class="text-sm text-green-500"><i class="fa fa-arrow-up"></i> 同比增长 8.3%</p>
+                            </div>
+                        </div>
+
+                        <!-- 年度趋势图 -->
+                        <div class="chart-container mb-8">
+                            <h2>年度趋势图</h2>
+                            <!-- 新增：使用包装器控制图表尺寸 -->
+                            <div class="chart-wrapper">
+                                <canvas id="yearlyChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- 专利类型分布图 -->
+                        <div class="chart-container mb-8">
+                            <h2>专利类型分布图</h2>
+                            <!-- 新增：使用包装器控制图表尺寸 -->
+                            <div class="chart-wrapper">
+                                <canvas id="typeChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 创建图表函数
+            function createCharts() {
+                // 年度趋势图
+                const yearlyCtx = document.getElementById('yearlyChart').getContext('2d');
+                const yearlyChart = new Chart(yearlyCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025'],
+                        datasets: [
+                            {
+                                label: '发明专利',
+                                data: [320000, 350000, 380000, 410000, 450000, 480000, 500000, 523689],
+                                borderColor: '#165DFF',
+                                backgroundColor: 'rgba(22, 93, 255, 0.1)',
+                                tension: 0.4,
+                                fill: true
+                            },
+                            {
+                                label: '实用新型',
+                                data: [450000, 480000, 510000, 540000, 580000, 620000, 650000, 684253],
+                                borderColor: '#36CFC9',
+                                backgroundColor: 'rgba(54, 207, 201, 0.1)',
+                                tension: 0.4,
+                                fill: true
+                            },
+                            {
+                                label: '外观设计',
+                                data: [55000, 54000, 53000, 52000, 51000, 50000, 49500, 49405],
+                                borderColor: '#FF7D00',
+                                backgroundColor: 'rgba(255, 125, 0, 0.1)',
+                                tension: 0.4,
+                                fill: true
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false, // 禁用宽高比，使用容器尺寸
+                        animation: {
+                            duration: 1000, // 动画持续时间
+                            easing: 'easeOutQuart' // 动画效果
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: {
+                                    usePointStyle: true,
+                                    padding: 20
+                                }
+                            },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                                titleColor: '#1a2a3a',
+                                bodyColor: '#333',
+                                borderColor: '#ddd',
+                                borderWidth: 1,
+                                padding: 15,
+                                boxPadding: 5,
+                                usePointStyle: true,
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += new Intl.NumberFormat().format(context.parsed.y);
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: 'rgba(0, 0, 0, 0.05)'
+                                },
+                                ticks: {
+                                    callback: function(value) {
+                                        if (value >= 1000) {
+                                            return value / 1000 + 'k';
+                                        }
+                                        return value;
+                                    }
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // 专利类型分布图
+                const typeCtx = document.getElementById('typeChart').getContext('2d');
+                const typeChart = new Chart(typeCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['发明专利', '实用新型', '外观设计'],
+                        datasets: [{
+                            data: [523689, 684253, 49405],
+                            backgroundColor: [
+                                '#165DFF',
+                                '#36CFC9',
+                                '#FF7D00'
+                            ],
+                            borderWidth: 0,
+                            hoverOffset: 15
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false, // 禁用宽高比，使用容器尺寸
+                        animation: {
+                            animateRotate: true,
+                            animateScale: true,
+                            duration: 1000,
+                            easing: 'easeOutQuart'
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    usePointStyle: true,
+                                    padding: 20
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                                titleColor: '#1a2a3a',
+                                bodyColor: '#333',
+                                borderColor: '#ddd',
+                                borderWidth: 1,
+                                padding: 15,
+                                boxPadding: 5,
+                                usePointStyle: true,
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || '';
+                                        const value = context.raw || 0;
+                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                        const percentage = Math.round((value / total) * 100);
+                                        return `${label}: ${new Intl.NumberFormat().format(value)} (${percentage}%)`;
+                                    }
+                                }
+                            }
+                        },
+                        cutout: '70%'
+                    }
+                });
+
+                return { yearlyChart, typeChart };
+            }
+
+            // 初始化图表
+            const charts = createCharts();
+
+            // 监听窗口大小变化，重新绘制图表
+            window.addEventListener('resize', function() {
+                // 销毁现有图表
+                if (charts.yearlyChart) charts.yearlyChart.destroy();
+                if (charts.typeChart) charts.typeChart.destroy();
+
+                // 重新创建图表
+                Object.assign(charts, createCharts());
+            });
+        });
+    </script>
+</body>
+
+</html>

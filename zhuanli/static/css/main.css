@@ -25,7 +25,7 @@ nav>ul{
 
 nav>ul>li{
     height: 100px;
-    width: 15%;
+    width: 35%;
     border-radius: 5px;
     background-size: cover;
     background-repeat: no-repeat;
@@ -45,36 +45,17 @@ nav>ul>li:after {
 
 nav>ul>li>p{
     color: #fff;
-    height: 44px;
-    line-height: 44px;
+    height: 30px;
+    line-height: 20px;
     text-align: center;
     position: relative;
     z-index: 2;
 }
 
 nav>ul>li:nth-child(1){
-    background-image: url("../images/1.jpg");
+    background-image: url("../images/1.png");
 }
 
-nav>ul>li:nth-child(2){
-    background-image: url("../images/2.jpg");
-}
-
-nav>ul>li:nth-child(3){
-    background-image: url("../images/3.jpg");
-}
-
-nav>ul>li:nth-child(4){
-    background-image: url("../images/4.jpg");
-}
-
-nav>ul>li:nth-child(5){
-    background-image: url("../images/5.jpg");
-}
-
-nav>ul>li:nth-child(6){
-    background-image: url("../images/6.jpg");
-}
 
 caption{
     margin-top: 10px;

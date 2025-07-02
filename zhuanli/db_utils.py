@@ -10,7 +10,7 @@ class DBUtils:
             self.connect = pymysql.connect(
                 host='localhost',
                 user='root',
-                password='200507282dx',
+                password='1234',
                 database='zhuanli',
                 charset='utf8mb4'
             )

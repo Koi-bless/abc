@@ -2,22 +2,87 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>各省近一年专利数量统计</title>
+    <!-- 引入 Bootstrap 样式 -->
     <link rel="stylesheet" href="https://cdn.staticfile.net/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- 引入自定义样式 -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
+    <!-- 引入 ECharts 库 -->
     <script src="{{ url_for('static', filename='js/echarts.min.js') }}"></script>
+    <!-- 引入 jQuery 库 -->
     <script src="{{ url_for('static', filename='js/jquery-3.1.1.min.js') }}"></script>
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
+       .wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        table {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        table caption {
+            caption-side: top;
+            text-align: center;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        #chart {
+            width: 100%;
+            height: 600px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        #chart:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+       .glyphicon {
+            margin-right: 5px;
+        }
+    </style>
 </head>
 <body>
-<div class="wrapper">
-    <header>各省近一年专利数量</header>
-    <section>
-        <table class="table table-striped">
-            <caption><span class="glyphicon glyphicon-th-list"></span>各省近一年专利数量-柱状图</caption>
-        </table>
-        <div id="chart"></div>
-    </section>
+    <div class="wrapper">
+        <!-- 页面头部 -->
+        <header>各省近一年专利数量</header>
+        <!-- 表格 -->
+        <section>
+            <table class="table table-striped">
+                <caption><span class="glyphicon glyphicon-th-list"></span>各省近一年专利数量-柱状图</caption>
+            </table>
+            <!-- 图表容器 -->
+            <div id="chart"></div>
+        </section>
+    </div>
     <script>
         $(function () {
             $.ajax({
@@ -32,6 +97,5 @@
             });
         });
     </script>
-</div>
 </body>
 </html>

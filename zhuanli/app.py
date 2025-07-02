@@ -12,7 +12,11 @@ utils = DBUtils()
 def hello_world():
     return render_template('index.html')
 
-@app.route('/patent_list.html')
+@app.route('/patent_data')
+def patent_data():
+    return render_template('patent_data.html')
+
+@app.route('/patent_list')
 def patent_list():
     keyword = request.args.get('keyword', '')
     if keyword:
@@ -59,7 +63,7 @@ def province_percent_chart():
     return charts.province_percent_chart(args)
 
 
-@app.route('/patent_map')
+@app.route('/patent_mapl')
 def patent_map():
     return render_template('patent_map.html')
 
