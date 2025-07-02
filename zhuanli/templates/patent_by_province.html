@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.net/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
+    <script src="{{ url_for('static', filename='js/echarts.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery-3.1.1.min.js') }}"></script>
+
+</head>
+<body>
+<div class="main">
+    <header>各省近一年专利数量</header>
+    <section>
+        <table class="table table-striped">
+            <caption><span class="glyphicon glyphicon-th-list"></span>各省近一年专利数量-柱状图</caption>
+        </table>
+        <div id="chart"></div>
+    </section>
+    <script>
+        $(function () {
+            $.ajax({
+                url: '/patent_by_province_chart', // Flask后端的URL
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // 使用获取到的配置项初始化图表
+                    let chart = echarts.init(document.getElementById('chart'));
+                    chart.setOption(data);
+                }
+            });
+        });
+    </script>
+</div>
+
+</body>
+</html>

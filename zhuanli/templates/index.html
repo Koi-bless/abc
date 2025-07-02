@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>中国专利-可视化平台</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.net/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/jquery-3.1.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+            <div class="logo-img">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo">
+            </div>
+            <div class="logo-text">可视化数据分析平台</div>
+        </header>
+        <section>
+            <div class="nav">
+                <dl>
+                    <dt>数据概览</dt>
+                    <dd href="/index" data-page="home">
+                        <span class="glyphicon glyphicon-th-list"></span>
+                        <span>首页</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>数据图表</dt>
+                    <dd href="/patent_list.html" data-page="list"><span class="glyphicon glyphicon-calendar"></span><span>专利列表</span></dd>
+                    <dd href="/patent_by_province" data-page="province"><span class="glyphicon glyphicon-calendar"></span><span>各省近一年专利数量</span></dd>
+                    <dd href="/province_percent" data-page="percent"><span class="glyphicon glyphicon-stats"></span><span>各省专利占比</span></dd>
+                    <dd href="/patent_map" data-page="map"><span class="glyphicon glyphicon-globe"></span><span>全国专利分布</span></dd>
+                </dl>
+                <dl>
+                    <dt>预测</dt>
+                    <dd href="/word_cloud" data-page="cloud"><span class="glyphicon glyphicon-cloud"></span><span>预测功能</span></dd>
+                </dl>
+            </div>
+            <div class="content">
+                <iframe id="mainFrame"></iframe>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
