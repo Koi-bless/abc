@@ -161,7 +161,7 @@ def prediction_line():
     # 设置全局配置
     line.set_global_opts(
         title_opts=opts.TitleOpts(
-            title="中国专利数量增长趋势与预测 (1985-2026)",
+            title="中国申请专利数量增长趋势与预测 (1985-2026)",
             subtitle="基于三次多项式拟合模型",
             pos_left="center",
             title_textstyle_opts=opts.TextStyleOpts(
@@ -184,11 +184,11 @@ def prediction_line():
                     var patent = value[1];
                     
                     if (seriesName === '预测值' && patent !== null) {
-                        return year + '年预测: ' + patent.toFixed(1) + '百万件';
+                        return year + '年预测: ' + patent.toFixed(1) + '万件';
                     } else if (seriesName === '实际专利数量' && patent !== null) {
-                        return year + '年: ' + patent.toFixed(1) + '百万件';
+                        return year + '年: ' + patent.toFixed(1) + '万件';
                     } else if (seriesName === '拟合曲线' && patent !== null) {
-                        return year + '年拟合值: ' + patent.toFixed(1) + '百万件';
+                        return year + '年拟合值: ' + patent.toFixed(1) + '万件';
                     }
                     return '';
                 }"""
@@ -213,7 +213,7 @@ def prediction_line():
         ),
         yaxis_opts=opts.AxisOpts(
             type_="value",
-            name="专利数量 (百万件)",
+            name="专利申请数量 (万件)",
             name_location="end",
             name_gap=40,
             name_textstyle_opts=opts.TextStyleOpts(font_size=14),

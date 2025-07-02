@@ -1,5 +1,4 @@
-from  flask import Flask, render_template, send_from_directory, request  # 已添加 request 导入
-import os
+from  flask import Flask, render_template, request  # 已添加 request 导入
 
 import charts
 from db_utils import DBUtils
