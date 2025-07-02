@@ -63,7 +63,7 @@ def province_percent_chart():
     return charts.province_percent_chart(args)
 
 
-@app.route('/patent_mapl')
+@app.route('/patent_map')
 def patent_map():
     return render_template('patent_map.html')
 
@@ -75,6 +75,15 @@ def patent_map_chart():
     for item in items:
         args.append((item[0],item[1]))
     return charts.patent_map_chart(args)
+
+@app.route('/prediction')
+def prediction():
+    return render_template('prediction.html')
+
+@app.route('/prediction_chart')
+def prediction_chart():
+    return charts.prediction_line()
+
 
 if __name__ == '__main__':
     app.run(debug=True)
