@@ -1,4 +1,4 @@
-from flask import Flask, render_template, send_from_directory
+from  flask import Flask, render_template, send_from_directory, request  # 已添加 request 导入
 import os
 
 import charts
@@ -14,13 +14,19 @@ def hello_world():
 
 @app.route('/patent_list.html')
 def patent_list():
-    patent_sum = utils.get_patent_sum()[0]
-    patent = utils.get_patent()
+    keyword = request.args.get('keyword', '')
+    if keyword:
+        patent_sum = utils.get_patent_sum_by_keyword(keyword)[0]
+        patent = utils.get_patent_by_keyword(keyword)
+    else:
+        patent_sum = utils.get_patent_sum()[0]
+        patent = utils.get_patent()
     data = {
         'patent_sum': patent_sum,
         'patent': patent
     }
     return render_template('patent_list.html', data=data)
+
 
 @app.route('/patent_by_province')
 def patent_by_province():
@@ -31,8 +37,8 @@ def patent_by_province():
 def patent_by_province_chart():
     data = utils.get_count_by_province()
     # 修改为使用整数索引
-    provinces = [item[0] for item in data]
-    counts = [item[1] for item in data]
+    provinces = [item['province'] for item in data]
+    counts = [item['nums'] for item in data]
     if not data:
         return "无法获取专利数据，请检查数据库连接", 500
     chart = charts.patent_province_chart((provinces, counts))
@@ -49,8 +55,7 @@ def province_percent_chart():
     args = []
     items = utils.get_count_by_province()
     for item in items:
-        # 修改为使用整数索引
-        args.append((item[0], item[1]))
+        args.append((item['province'], item['nums']))
     return charts.province_percent_chart(args)
 
 
@@ -64,8 +69,7 @@ def patent_map_chart():
     args = []
     items = utils.get_count_by_province()
     for item in items:
-        # 修改为使用整数索引
-        args.append((item[0],item[1]))
+        args.append((item['province'],item['nums']))
     return charts.patent_map_chart(args)
 
 if __name__ == '__main__':

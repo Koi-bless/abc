@@ -34,6 +34,21 @@ class DBUtils:
         finally:
             self.close_connect()
 
+    def get_patent_sum_by_keyword(self,keyword):
+        self.open_connect()
+        try:
+            with self.connect.cursor() as cursor:
+                sql = 'SELECT COUNT(*) FROM `patent_info` WHERE title LIKE %s OR famingren LIKE %s OR quanren LIKE %s'
+                keyword = '%' + keyword + '%'
+                cursor.execute(sql, (keyword, keyword, keyword))
+                return cursor.fetchone()
+        except Exception as ex:
+            print('数据库操作异常', ex)
+            return [] # 返回默认值
+        finally:
+            self.close_connect()
+
+
     def get_type_count(self):
         self.open_connect()
         try:
@@ -69,5 +84,21 @@ class DBUtils:
                 return cursor.fetchall()
         except Exception as ex:
             print('数据库操作异常', ex)
+            return []  # 返回空列表
+        finally:
+            self.close_connect()
+
+
+    def get_patent_by_keyword(self, keyword):
+        self.open_connect()
+        try:
+            with self.connect.cursor() as cursor:
+                sql = 'SELECT * FROM `patent_info` WHERE title LIKE %s OR famingren LIKE %s OR quanren LIKE %s'
+                keyword = '%' + keyword + '%'
+                cursor.execute(sql, (keyword, keyword, keyword))
+                return cursor.fetchall()
+        except Exception as ex:
+            print('数据库操作异常', ex)
+            return []  # 返回空列表
         finally:
             self.close_connect()
